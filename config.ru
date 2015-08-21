@@ -1,6 +1,6 @@
 require './app'
-require './middlewares/chat_backend'
+require './middlewares/cf_backend'
 
-use ChatDemo::ChatBackend
+use ConnectFour::CFBackend
 
-run ChatDemo::App
+run ConnectFour::App

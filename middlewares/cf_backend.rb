@@ -4,8 +4,8 @@ require 'redis'
 require 'json'
 require 'erb'
 
-module ChatDemo
-  class ChatBackend
+module ConnectFour
+  class CFBackend
     KEEPALIVE_TIME = 15 # in seconds
     CHANNEL        = "chat-demo"
 
