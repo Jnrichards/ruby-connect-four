@@ -1,18 +1,57 @@
-var scheme   = "<%= @scheme %>";
-var uri      = scheme + window.document.location.host + "/";
-var ws       = new WebSocket(uri);
-ws.onmessage = function(message) {
-  var data = JSON.parse(message.data);
-  $("#chat-text").append("<div class='panel panel-default'><div class='panel-heading'>" + data.handle + "</div><div class='panel-body'>" + data.text + "</div></div>");
-  $("#chat-text").stop().animate({
-    scrollTop: $('#chat-text')[0].scrollHeight
-  }, 800);
-};
+$(document).ready(function(){
+  var scheme   = "<%= @scheme %>";
+  var uri      = scheme + window.document.location.host + "/";
+  var ws       = new WebSocket(uri);
+  ws.onmessage = function(message) {
+    var data = JSON.parse(message.data);
+    $("#chat-text").append("<div class='panel panel-default'><div class='panel-heading'>Player " + data.player + " say:</div><div class='panel-body'>" + data.text + "</div></div>");
+    $("#chat-text").stop().animate({
+      scrollTop: $('#chat-text')[0].scrollHeight
+    }, 800);
+  };
 
-$("#input-form").on("submit", function(event) {
-  event.preventDefault();
-  var handle = $("#input-handle")[0].value;
-  var text   = $("#input-text")[0].value;
-  ws.send(JSON.stringify({ handle: handle, text: text }));
-  $("#input-text")[0].value = "";
+  $("#input-form").on("submit", function(event) {
+    event.preventDefault();
+    var player = ""+$("#input-player")[0].value;
+    var text   = $("#input-text")[0].value;
+    ws.send(JSON.stringify({ player: player, text: text }));
+    $("#input-text")[0].value = "";
+  });
+
+  var peerId = 2
+  var turn = true
+  var grid = [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ]
+
+  $('#game .grid tr td').on('click', function(event) {
+    event.preventDefault()
+    if(!turn) {
+      return
+    }
+
+    var i = $(this).index()
+    if(grid[i].length == 6) {
+      return
+    }
+
+    grid[i].push(peerId)
+    $('#game .grid tr:eq('+(6-grid[i].length)+') td:eq('+i+') .slot').addClass('filled')
+
+    $('#game .alert p').text("Waiting for opponent's move")
+  })
+
+  $('#game .grid td').on('mouseenter', function() {
+    $('#game .grid tr td:nth-child('+($(this).index()+1)+')').addClass('hover')
+  })
+  $('#game .grid td').on('mouseleave', function() {
+    $('#game .grid tr td:nth-child('+($(this).index()+1)+')').removeClass('hover')
+  })
+
 });

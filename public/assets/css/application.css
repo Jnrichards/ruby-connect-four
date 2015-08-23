@@ -1,4 +1,52 @@
 #chat-text {
   overflow: auto;
   height: 500px;
+  margin-top: 20px;
+}
+#input-text {
+  width: 36%;
+}
+#input-form > button {
+  float: right;
+}
+#game {
+  display: table;
+  float: left;
+  width: 50%;
+  height: 100%;
+  margin-right: 10px;
+}
+#game > div {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+#game > div > div {
+  width: 500px;
+  margin: 0 auto 0;
+  text-align: left;
+}
+#game .grid td {
+  border: 1px solid #eee;
+  background: #fefefe;
+}
+#game .grid td.hover {
+  background: #fafafa;
+}
+#game .grid .slot {
+  width: 50px;
+  height: 50px;
+  margin: 4px auto;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  background: #fff;
+}
+#game .grid .slot.filled {
+  background: #3c763d;
+}
+#game .grid .slot.filled-opponent {
+  background: #a94442;
+}
+#game .grid.ended .slot:not(.highlight) {
+  opacity: 0.5;
 }
