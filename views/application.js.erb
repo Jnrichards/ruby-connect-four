@@ -20,15 +20,11 @@ $(document).ready(function(){
 
   var peerId = 2
   var turn = true
-  var grid = [
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    []
-  ]
+  var grid_object = JSON.parse('<%= board %>')
+  var grid = []
+  $.each( grid_object, function( key, value ) {
+    grid.push($.map(value, function(k,v) {if(k>0) return k}));
+  });
 
   $('#game .grid tr td').on('click', function(event) {
     event.preventDefault()

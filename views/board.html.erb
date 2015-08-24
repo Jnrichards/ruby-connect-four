@@ -16,11 +16,12 @@
             </div>
             <table class="table grid">
               <tbody>
-              <% for i in 1..6 %>
+              <% 5.step(0, -1) do |i| %>
                 <tr>
-                <% for j in 1..7 %>
+                <% for j in 0..6 %>
                     <td class="">
-                      <div class="slot"></div>
+                      <% val = board.fetch(j.to_s, {}).fetch(i.to_s, {}) %>
+                      <div class="slot <% if val == 1 %>filled<% elsif val == 2 %>filled-opponent<% end %>"></div>
                     </td>
                 <% end %>
                 </tr>

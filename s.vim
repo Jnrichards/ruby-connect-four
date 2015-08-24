@@ -1,10 +1,11 @@
 let SessionLoad = 1
 if &cp | set nocp | endif
+let s:cpo_save=&cpo
+set cpo&vim
+imap <S-CR> :execute 'normal o' . EndToken()O
 nnoremap <silent>  :CtrlP
 map D :NERDTreeToggle
 nmap E :ConqueTermSplit bash
-let s:cpo_save=&cpo
-set cpo&vim
 xmap S <Plug>VSurround
 map T :tabnew
 map X :tabnext
@@ -60,10 +61,13 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +6 app.rb
-badd +0 views/index.html.erb
-badd +0 views/board.html.erb
-badd +0 public/assets/css/application.css
-badd +0 views/application.js.erb
+badd +1 views/index.html.erb
+badd +1 views/board.html.erb
+badd +1 public/assets/css/application.css
+badd +1 views/application.js.erb
+badd +0 middlewares/cf_backend.rb
+badd +0 config.ru
+badd +0 routes.rb
 silent! argdel *
 edit app.rb
 set splitbelow splitright
@@ -175,11 +179,243 @@ set nowrap
 setlocal nowrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 6 - ((5 * winheight(0) + 21) / 42)
+let s:l = 5 - ((4 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-6
+5
+normal! 024l
+tabedit routes.rb
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+let s:cpo_save=&cpo
+set cpo&vim
+cmap <buffer>  <Plug><cfile>
+cmap <buffer>  <Plug><cword>
+let &cpo=s:cpo_save
+unlet s:cpo_save
+setlocal noautoindent
+setlocal nobinary
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal nocindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=:#
+setlocal commentstring=#\ %s
+setlocal complete=.,w,b,u,t,i
+setlocal completefunc=
+setlocal nocopyindent
+setlocal cryptmethod=
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal nocursorline
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal expandtab
+if &filetype != 'ruby'
+setlocal filetype=ruby
+endif
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=manual
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatexpr=
+setlocal formatoptions=croql
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal grepprg=
+setlocal iminsert=0
+setlocal imsearch=0
+setlocal include=^\\s*\\<\\(load\\>\\|require\\>\\|autoload\\s*:\\=[\"']\\=\\h\\w*[\"']\\=,\\)
+setlocal includeexpr=substitute(substitute(v:fname,'::','/','g'),'$','.rb','')
+setlocal indentexpr=GetRubyIndent(v:lnum)
+setlocal indentkeys=0{,0},0),0],!^F,o,O,e,:,.,=end,=else,=elsif,=when,=ensure,=rescue,==begin,==end,=private,=protected,=public
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=ri
+setlocal nolinebreak
+setlocal nolisp
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=octal,hex
+set number
+setlocal nonumber
+setlocal numberwidth=4
+setlocal omnifunc=rubycomplete#Complete
+setlocal path=~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0/x86_64-darwin13.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0/x86_64-darwin13.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/x86_64-darwin13.0
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+set relativenumber
+setlocal relativenumber
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal noshortname
+setlocal nosmartindent
+setlocal softtabstop=0
+setlocal nospell
+setlocal spellcapcheck=
+setlocal spellfile=
+setlocal spelllang=en
+setlocal statusline=%{lightline#link()}%#LightLineLeft_active_0#%(\ %{exists(\"*MyMode\")?MyMode():\"\"}\ %)%{(!!strlen(exists(\"*MyMode\")?MyMode():\"\"))*((&paste))?('|'):''}%(\ %{&paste?\"PASTE\":\"\"}\ %)%#LightLineLeft_active_0_1#%#LightLineLeft_active_1#%(\ %{exists(\"*MyFugitive\")?MyFugitive():\"\"}\ %)%{(!!strlen(exists(\"*MyFugitive\")?MyFugitive():\"\"))*((!!strlen(exists(\"*MyFilename\")?MyFilename():\"\")))?('|'):''}%(\ %{exists(\"*MyFilename\")?MyFilename():\"\"}\ %)%#LightLineLeft_active_1_2#%#LightLineMiddle_active#%=%#LightLineRight_active_2_3#|%#LightLineRight_active_2#%(\ %{exists(\"*MyFileformat\")?MyFileformat():\"\"}\ %)%{(!!strlen(exists(\"*MyFileencoding\")?MyFileencoding():\"\"))*((!!strlen(exists(\"*MyFileformat\")?MyFileformat():\"\")))?('|'):''}%(\ %{exists(\"*MyFileencoding\")?MyFileencoding():\"\"}\ %)%{(!!strlen(exists(\"*MyFiletype\")?MyFiletype():\"\"))*((!!strlen(exists(\"*MyFileformat\")?MyFileformat():\"\"))+(!!strlen(exists(\"*MyFileencoding\")?MyFileencoding():\"\")))?('|'):''}%(\ %{exists(\"*MyFiletype\")?MyFiletype():\"\"}\ %)%#LightLineRight_active_1_2#%#LightLineRight_active_1#%(\ %3p%%\ %)%#LightLineRight_active_0_1#%#LightLineRight_active_0#%(\ %3l:%-2v\ %)
+setlocal suffixesadd=.rb
+setlocal swapfile
+setlocal synmaxcol=3000
+if &syntax != 'ruby'
+setlocal syntax=ruby
+endif
+setlocal tabstop=2
+setlocal tags=./tags,tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0/x86_64-darwin13.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0/x86_64-darwin13.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/x86_64-darwin13.0/tags
+setlocal textwidth=0
+setlocal thesaurus=
+setlocal noundofile
+setlocal nowinfixheight
+setlocal nowinfixwidth
+set nowrap
+setlocal nowrap
+setlocal wrapmargin=0
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 21) / 42)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+tabedit middlewares/cf_backend.rb
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+let s:cpo_save=&cpo
+set cpo&vim
+cmap <buffer>  <Plug><cfile>
+cmap <buffer>  <Plug><cword>
+let &cpo=s:cpo_save
+unlet s:cpo_save
+setlocal noautoindent
+setlocal nobinary
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal nocindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=:#
+setlocal commentstring=#\ %s
+setlocal complete=.,w,b,u,t,i
+setlocal completefunc=
+setlocal nocopyindent
+setlocal cryptmethod=
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal nocursorline
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal expandtab
+if &filetype != 'ruby'
+setlocal filetype=ruby
+endif
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=manual
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatexpr=
+setlocal formatoptions=croql
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal grepprg=
+setlocal iminsert=0
+setlocal imsearch=0
+setlocal include=^\\s*\\<\\(load\\>\\|require\\>\\|autoload\\s*:\\=[\"']\\=\\h\\w*[\"']\\=,\\)
+setlocal includeexpr=substitute(substitute(v:fname,'::','/','g'),'$','.rb','')
+setlocal indentexpr=GetRubyIndent(v:lnum)
+setlocal indentkeys=0{,0},0),0],!^F,o,O,e,:,.,=end,=else,=elsif,=when,=ensure,=rescue,==begin,==end,=private,=protected,=public
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=ri
+setlocal nolinebreak
+setlocal nolisp
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=octal,hex
+set number
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=rubycomplete#Complete
+setlocal path=~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0/x86_64-darwin13.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0/x86_64-darwin13.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/x86_64-darwin13.0
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+set relativenumber
+setlocal relativenumber
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal noshortname
+setlocal nosmartindent
+setlocal softtabstop=0
+setlocal nospell
+setlocal spellcapcheck=
+setlocal spellfile=
+setlocal spelllang=en
+setlocal statusline=%{lightline#link()}%#LightLineLeft_active_0#%(\ %{exists(\"*MyMode\")?MyMode():\"\"}\ %)%{(!!strlen(exists(\"*MyMode\")?MyMode():\"\"))*((&paste))?('|'):''}%(\ %{&paste?\"PASTE\":\"\"}\ %)%#LightLineLeft_active_0_1#%#LightLineLeft_active_1#%(\ %{exists(\"*MyFugitive\")?MyFugitive():\"\"}\ %)%{(!!strlen(exists(\"*MyFugitive\")?MyFugitive():\"\"))*((!!strlen(exists(\"*MyFilename\")?MyFilename():\"\")))?('|'):''}%(\ %{exists(\"*MyFilename\")?MyFilename():\"\"}\ %)%#LightLineLeft_active_1_2#%#LightLineMiddle_active#%=%#LightLineRight_active_2_3#|%#LightLineRight_active_2#%(\ %{exists(\"*MyFileformat\")?MyFileformat():\"\"}\ %)%{(!!strlen(exists(\"*MyFileencoding\")?MyFileencoding():\"\"))*((!!strlen(exists(\"*MyFileformat\")?MyFileformat():\"\")))?('|'):''}%(\ %{exists(\"*MyFileencoding\")?MyFileencoding():\"\"}\ %)%{(!!strlen(exists(\"*MyFiletype\")?MyFiletype():\"\"))*((!!strlen(exists(\"*MyFileformat\")?MyFileformat():\"\"))+(!!strlen(exists(\"*MyFileencoding\")?MyFileencoding():\"\")))?('|'):''}%(\ %{exists(\"*MyFiletype\")?MyFiletype():\"\"}\ %)%#LightLineRight_active_1_2#%#LightLineRight_active_1#%(\ %3p%%\ %)%#LightLineRight_active_0_1#%#LightLineRight_active_0#%(\ %3l:%-2v\ %)
+setlocal suffixesadd=.rb
+setlocal swapfile
+setlocal synmaxcol=3000
+if &syntax != 'ruby'
+setlocal syntax=ruby
+endif
+setlocal tabstop=2
+setlocal tags=./tags,tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0/x86_64-darwin13.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0/x86_64-darwin13.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/x86_64-darwin13.0/tags
+setlocal textwidth=0
+setlocal thesaurus=
+setlocal noundofile
+setlocal nowinfixheight
+setlocal nowinfixwidth
+set nowrap
+setlocal nowrap
+setlocal wrapmargin=0
+silent! normal! zE
+let s:l = 7 - ((6 * winheight(0) + 21) / 42)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+7
 normal! 0
 tabedit views/application.js.erb
 set splitbelow splitright
@@ -291,11 +527,11 @@ set nowrap
 setlocal nowrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 45 - ((29 * winheight(0) + 21) / 42)
+let s:l = 38 - ((22 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-45
+38
 normal! 0
 tabedit public/assets/css/application.css
 set splitbelow splitright
@@ -401,12 +637,12 @@ set nowrap
 setlocal nowrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 3 - ((2 * winheight(0) + 21) / 42)
+let s:l = 7 - ((6 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-3
-normal! 02l
+7
+normal! 010l
 tabedit views/board.html.erb
 set splitbelow splitright
 set nosplitbelow
@@ -517,12 +753,12 @@ set nowrap
 setlocal nowrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 18 - ((12 * winheight(0) + 21) / 42)
+let s:l = 4 - ((3 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-18
-normal! 019l
+4
+normal! 022l
 tabedit views/index.html.erb
 set splitbelow splitright
 set nosplitbelow
@@ -596,7 +832,7 @@ setlocal modeline
 setlocal modifiable
 setlocal nrformats=octal,hex
 set number
-setlocal number
+setlocal nonumber
 setlocal numberwidth=4
 setlocal omnifunc=rubycomplete#Complete
 setlocal path=~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0/x86_64-darwin13.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0/x86_64-darwin13.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/x86_64-darwin13.0
@@ -633,13 +869,129 @@ set nowrap
 setlocal nowrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 21) / 42)
+let s:l = 2 - ((1 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+2
 normal! 0
-tabnext 4
+tabedit config.ru
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+let s:cpo_save=&cpo
+set cpo&vim
+cmap <buffer>  <Plug><cfile>
+cmap <buffer>  <Plug><cword>
+let &cpo=s:cpo_save
+unlet s:cpo_save
+setlocal noautoindent
+setlocal nobinary
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal nocindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=:#
+setlocal commentstring=#\ %s
+setlocal complete=.,w,b,u,t,i
+setlocal completefunc=
+setlocal nocopyindent
+setlocal cryptmethod=
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal nocursorline
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal expandtab
+if &filetype != 'ruby'
+setlocal filetype=ruby
+endif
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=manual
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatexpr=
+setlocal formatoptions=croql
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal grepprg=
+setlocal iminsert=0
+setlocal imsearch=0
+setlocal include=^\\s*\\<\\(load\\>\\|require\\>\\|autoload\\s*:\\=[\"']\\=\\h\\w*[\"']\\=,\\)
+setlocal includeexpr=substitute(substitute(v:fname,'::','/','g'),'$','.rb','')
+setlocal indentexpr=GetRubyIndent(v:lnum)
+setlocal indentkeys=0{,0},0),0],!^F,o,O,e,:,.,=end,=else,=elsif,=when,=ensure,=rescue,==begin,==end,=private,=protected,=public
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=ri
+setlocal nolinebreak
+setlocal nolisp
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=octal,hex
+set number
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=rubycomplete#Complete
+setlocal path=~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0/x86_64-darwin13.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0/x86_64-darwin13.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/x86_64-darwin13.0
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+set relativenumber
+setlocal relativenumber
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal noshortname
+setlocal nosmartindent
+setlocal softtabstop=0
+setlocal nospell
+setlocal spellcapcheck=
+setlocal spellfile=
+setlocal spelllang=en
+setlocal statusline=%{lightline#link()}%#LightLineLeft_active_0#%(\ %{exists(\"*MyMode\")?MyMode():\"\"}\ %)%{(!!strlen(exists(\"*MyMode\")?MyMode():\"\"))*((&paste))?('|'):''}%(\ %{&paste?\"PASTE\":\"\"}\ %)%#LightLineLeft_active_0_1#%#LightLineLeft_active_1#%(\ %{exists(\"*MyFugitive\")?MyFugitive():\"\"}\ %)%{(!!strlen(exists(\"*MyFugitive\")?MyFugitive():\"\"))*((!!strlen(exists(\"*MyFilename\")?MyFilename():\"\")))?('|'):''}%(\ %{exists(\"*MyFilename\")?MyFilename():\"\"}\ %)%#LightLineLeft_active_1_2#%#LightLineMiddle_active#%=%#LightLineRight_active_2_3#|%#LightLineRight_active_2#%(\ %{exists(\"*MyFileformat\")?MyFileformat():\"\"}\ %)%{(!!strlen(exists(\"*MyFileencoding\")?MyFileencoding():\"\"))*((!!strlen(exists(\"*MyFileformat\")?MyFileformat():\"\")))?('|'):''}%(\ %{exists(\"*MyFileencoding\")?MyFileencoding():\"\"}\ %)%{(!!strlen(exists(\"*MyFiletype\")?MyFiletype():\"\"))*((!!strlen(exists(\"*MyFileformat\")?MyFileformat():\"\"))+(!!strlen(exists(\"*MyFileencoding\")?MyFileencoding():\"\")))?('|'):''}%(\ %{exists(\"*MyFiletype\")?MyFiletype():\"\"}\ %)%#LightLineRight_active_1_2#%#LightLineRight_active_1#%(\ %3p%%\ %)%#LightLineRight_active_0_1#%#LightLineRight_active_0#%(\ %3l:%-2v\ %)
+setlocal suffixesadd=.rb
+setlocal swapfile
+setlocal synmaxcol=3000
+if &syntax != 'ruby'
+setlocal syntax=ruby
+endif
+setlocal tabstop=2
+setlocal tags=./tags,tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/2.1.0/x86_64-darwin13.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/site_ruby/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/2.1.0/x86_64-darwin13.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/vendor_ruby/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/tags,~/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/x86_64-darwin13.0/tags
+setlocal textwidth=0
+setlocal thesaurus=
+setlocal noundofile
+setlocal nowinfixheight
+setlocal nowinfixwidth
+set nowrap
+setlocal nowrap
+setlocal wrapmargin=0
+silent! normal! zE
+let s:l = 6 - ((5 * winheight(0) + 21) / 42)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+6
+normal! 04l
+tabnext 2
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf
 endif
