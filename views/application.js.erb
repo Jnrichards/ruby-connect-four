@@ -12,9 +12,9 @@ $(document).ready(function(){
 
   $("#input-form").on("submit", function(event) {
     event.preventDefault();
-    var player = ""+$("#input-player")[0].value;
+    var player = $("#input-player")[0].value;
     var text   = $("#input-text")[0].value;
-    ws.send(JSON.stringify({ player: player, text: text }));
+    ws.send(JSON.stringify({ msg_type: 'chat', player: player, text: text }));
     $("#input-text")[0].value = "";
   });
 
@@ -28,18 +28,13 @@ $(document).ready(function(){
 
   $('#game .grid tr td').on('click', function(event) {
     event.preventDefault()
-    if(!turn) {
-      return
-    }
-
+    if(!turn) { return }
+    var player = $("#input-player")[0].value;
     var i = $(this).index()
-    if(grid[i].length == 6) {
-      return
-    }
-
+    if(grid[i].length == 6) { return }
     grid[i].push(peerId)
     $('#game .grid tr:eq('+(6-grid[i].length)+') td:eq('+i+') .slot').addClass('filled')
-
+    ws.send(JSON.stringify({ msg_type: 'move', player: player, text: i }));
     $('#game .alert p').text("Waiting for opponent's move")
   })
 
