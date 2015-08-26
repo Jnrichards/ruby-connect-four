@@ -3,6 +3,7 @@ require 'thread'
 require 'redis'
 require 'json'
 require 'erb'
+require './controllers/connect_four'
 
 module ConnectFour
   class CFBackend
@@ -12,13 +13,24 @@ module ConnectFour
     def initialize(app)
       @app     = app
       @clients = []
-      uri = URI.parse(ENV["REDISCLOUD_URL"])
-      @redis = Redis.new(host: uri.host, port: uri.port, password: uri.password)
+      uri      = URI.parse(ENV["REDISCLOUD_URL"])
+      @redis   = Redis.new(host: uri.host, port: uri.port, password: uri.password)
       Thread.new do
         redis_sub = Redis.new(host: uri.host, port: uri.port, password: uri.password)
         redis_sub.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
-            @clients.each {|ws| ws.send(msg) }
+            @clients.each do |ws| 
+              m = JSON.parse(msg)
+              if m['msg_type'] == 'chat'
+                ws.send(msg) 
+              elsif m['msg_type'] == 'move'
+                g = ConnectFour::Game.new(@redis, m['player'])
+                r = {:msg_type=>"opponent-move", :player=>g.player, :move=>m['move']}
+                ws.send(r.to_json)
+                r = {:msg_type=>"turn", :turn=> g.player.to_i==2 ? 1 : 2}
+                ws.send(r.to_json)
+              end
+            end
           end
         end
       end

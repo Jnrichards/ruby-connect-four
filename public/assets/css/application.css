@@ -41,10 +41,10 @@
   border-radius: 50%;
   background: #fff;
 }
-#game .grid .slot.filled {
+#game .grid .slot.filled-1 {
   background: #3c763d;
 }
-#game .grid .slot.filled-opponent {
+#game .grid .slot.filled-2 {
   background: #a94442;
 }
 #game .grid.ended .slot:not(.highlight) {

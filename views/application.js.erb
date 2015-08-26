@@ -2,12 +2,37 @@ $(document).ready(function(){
   var scheme   = "<%= @scheme %>";
   var uri      = scheme + window.document.location.host + "/";
   var ws       = new WebSocket(uri);
+  var grid_object = JSON.parse('<%= board %>')
+  var grid     = []
+  $.each( grid_object, function( key, value ) {
+    grid.push($.map(value, function(k,v) {if(k>0) return k}));
+  });
+  if($("#input-turn")[0].value==$("#input-player")[0].value){
+    $('#game .alert p').text("Your turn.")
+  }else{    
+    $('#game .alert p').text("Waiting for opponent's move.")
+  }
+
   ws.onmessage = function(message) {
     var data = JSON.parse(message.data);
-    $("#chat-text").append("<div class='panel panel-default'><div class='panel-heading'>Player " + data.player + " say:</div><div class='panel-body'>" + data.text + "</div></div>");
-    $("#chat-text").stop().animate({
-      scrollTop: $('#chat-text')[0].scrollHeight
-    }, 800);
+    if(data.msg_type=='chat'){
+      $("#chat-text").append("<div class='panel panel-default'><div class='panel-heading'>Player " + data.player + " say:</div><div class='panel-body'>" + data.text + "</div></div>");
+      $("#chat-text").stop().animate({
+        scrollTop: $('#chat-text')[0].scrollHeight
+      }, 800);
+    }else if(data.msg_type=='opponent-move' && data.player!=$("#input-player")[0].value){
+      i = data.move
+      if(grid[i].length == 6) { return }
+      grid[i].push(data.player)
+      $('#game .grid tr:eq('+(6-grid[i].length)+') td:eq('+i+') .slot').addClass('filled-'+data.player)
+    }else if(data.msg_type=='turn'){  
+      $("#input-turn").val(data.turn);  
+      if(data.turn==$("#input-player")[0].value){
+        $('#game .alert p').text("Your turn.")
+      }else{    
+        $('#game .alert p').text("Waiting for opponent's move.")
+      }
+    }
   };
 
   $("#input-form").on("submit", function(event) {
@@ -18,24 +43,16 @@ $(document).ready(function(){
     $("#input-text")[0].value = "";
   });
 
-  var peerId = 2
-  var turn = true
-  var grid_object = JSON.parse('<%= board %>')
-  var grid = []
-  $.each( grid_object, function( key, value ) {
-    grid.push($.map(value, function(k,v) {if(k>0) return k}));
-  });
-
   $('#game .grid tr td').on('click', function(event) {
     event.preventDefault()
-    if(!turn) { return }
+    var turn = $("#input-turn")[0].value;
     var player = $("#input-player")[0].value;
+    if(turn!=player) { return }
     var i = $(this).index()
     if(grid[i].length == 6) { return }
-    grid[i].push(peerId)
-    $('#game .grid tr:eq('+(6-grid[i].length)+') td:eq('+i+') .slot').addClass('filled')
-    ws.send(JSON.stringify({ msg_type: 'move', player: player, text: i }));
-    $('#game .alert p').text("Waiting for opponent's move")
+    grid[i].push(player)
+    $('#game .grid tr:eq('+(6-grid[i].length)+') td:eq('+i+') .slot').addClass('filled-'+player)
+    ws.send(JSON.stringify({ msg_type: 'move', player: player, move: i }));
   })
 
   $('#game .grid td').on('mouseenter', function() {

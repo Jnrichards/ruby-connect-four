@@ -21,7 +21,7 @@
                 <% for j in 0..6 %>
                     <td class="">
                       <% val = board.fetch(j.to_s, {}).fetch(i.to_s, {}) %>
-                      <div class="slot <% if val == 1 %>filled<% elsif val == 2 %>filled-opponent<% end %>"></div>
+                      <div class="slot <% if val == 1 %>filled-1<% elsif val == 2 %>filled-2<% end %>"></div>
                     </td>
                 <% end %>
                 </tr>
@@ -29,7 +29,7 @@
               </tbody>
             </table><br>
             <div class="alert alert-info">
-              <p>Waiting for opponent<span class="pull-right">Peer ID: 18qd8f6f9iugcik9</span></p>
+              <p></p>
             </div>
           </div>
         </div>
@@ -41,6 +41,7 @@
         <form id="input-form" class="form-inline">
           <input id="input-text" type="text" class="form-control" placeholder="Enter chat text here!" autofocus />
           <input id="input-player" type="hidden" value="<%= player %>"/>
+          <input id="input-turn" type="hidden" value="<%= turn %>"/>
           <button class="btn btn-primary" type="submit">Send</button>
         </form>
         <div id="chat-text"> </div>
