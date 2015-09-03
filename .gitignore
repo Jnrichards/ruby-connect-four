@@ -1,6 +1,7 @@
 *.swp
 *.gem
 *.rbc
+*.vim
 /.config
 /coverage/
 /InstalledFiles

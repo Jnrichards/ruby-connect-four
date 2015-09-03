@@ -7,13 +7,13 @@ module Sinatra
           @redis = Redis.new(host: uri.host, port: uri.port, password: uri.password)
           #@redis.set("board", Hash.new.to_json)
           board = {
-            0=> { 0=> 1, 1=> 2, 2=> 0, 3=> 0, 4=> 0, 5=> 0 },
-            1=> { 0=> 1, 1=> 1, 2=> 0, 3=> 0, 4=> 0, 5=> 0 },
-            2=> { 0=> 1, 1=> 1, 2=> 2, 3=> 0, 4=> 0, 5=> 0 },
-            3=> { 0=> 0, 1=> 0, 2=> 0, 3=> 0, 4=> 0, 5=> 0 },
-            4=> { 0=> 0, 1=> 0, 2=> 0, 3=> 0, 4=> 0, 5=> 0 },
-            5=> { 0=> 0, 1=> 0, 2=> 0, 3=> 0, 4=> 0, 5=> 0 },
-            6=> { 0=> 0, 1=> 0, 2=> 0, 3=> 0, 4=> 0, 5=> 0 },
+            0=> { },
+            1=> { },
+            2=> { },
+            3=> { },
+            4=> { },
+            5=> { },
+            6=> { },
           }
           @redis.set("board", board.to_json)
           @redis.set("turn", 1)
@@ -45,7 +45,7 @@ module Sinatra
           content_type :js
           @scheme = ENV['RACK_ENV'] == "production" ? "wss://" : "ws://"
           uri = URI.parse(ENV["REDISCLOUD_URL"])
-          @redis = Redis.new(host: uri.host, port: uri.port, password: uri.password, db: 10)
+          @redis = Redis.new(host: uri.host, port: uri.port, password: uri.password)
           erb :"application.js", :locals => {board: @redis.get("board")}
         end
       end

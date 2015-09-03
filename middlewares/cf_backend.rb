@@ -16,20 +16,32 @@ module ConnectFour
       uri      = URI.parse(ENV["REDISCLOUD_URL"])
       @redis   = Redis.new(host: uri.host, port: uri.port, password: uri.password)
       Thread.new do
+        #Redis subscribe loop
         redis_sub = Redis.new(host: uri.host, port: uri.port, password: uri.password)
         redis_sub.subscribe(CHANNEL) do |on|
+          #On message received
           on.message do |channel, msg|
-            @clients.each do |ws| 
-              m = JSON.parse(msg)
-              if m['msg_type'] == 'chat'
-                ws.send(msg) 
-              elsif m['msg_type'] == 'move'
-                g = ConnectFour::Game.new(@redis, m['player'])
-                r = {:msg_type=>"opponent-move", :player=>g.player, :move=>m['move']}
-                ws.send(r.to_json)
-                r = {:msg_type=>"turn", :turn=> g.player.to_i==2 ? 1 : 2}
-                ws.send(r.to_json)
+            msg_to_send = []
+            m = JSON.parse(msg)
+            #What kind of message?
+            if m['msg_type'] == 'chat'
+              msg_to_send << msg 
+            elsif m['msg_type'] == 'move'
+              g = ConnectFour::Game.new(@redis, m['player'])
+              g.move m['move'].to_i
+              r = {:msg_type=>"opponent-move", :player=>g.player, :move=>m['move']}
+              msg_to_send << r.to_json
+              r = {:msg_type=>"turn", :turn=> g.player.to_i==2 ? 1 : 2}
+              msg_to_send << r.to_json
+              if g.winner?
+                r = {:msg_type=>"chat", :player=>g.player, :text=>"winner"}
+                msg_to_send << r.to_json
               end
+            end
+            #Send response to each subscribed client
+            @clients.each do |ws| 
+              #Send each message
+              msg_to_send.each { |message| ws.send(message) }
             end
           end
         end
@@ -57,7 +69,6 @@ module ConnectFour
 
         # Return async Rack response
         ws.rack_response
-
       else
         @app.call(env)
       end
