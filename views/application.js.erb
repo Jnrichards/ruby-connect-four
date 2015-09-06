@@ -4,6 +4,7 @@ $(document).ready(function(){
   var ws       = new WebSocket(uri);
   var grid_object = JSON.parse('<%= board %>')
   var grid     = []
+  var winner   = 0
   $.each( grid_object, function( key, value ) {
     grid.push($.map(value, function(k,v) {if(k>0) return k}));
   });
@@ -32,6 +33,10 @@ $(document).ready(function(){
       }else{    
         $('#game .alert p').text("Waiting for opponent's move.")
       }
+    }else if(data.msg_type=='winner'){ 
+      winner = data.player;
+      $('#game .alert p').text("Player "+data.player+" wins!");
+      alert('The game is over, player '+winner+' win.'); 
     }
   };
 
@@ -45,6 +50,7 @@ $(document).ready(function(){
 
   $('#game .grid tr td').on('click', function(event) {
     event.preventDefault()
+    if(winner != 0) alert('The game is over, player '+winner+' win.');
     var turn = $("#input-turn")[0].value;
     var player = $("#input-player")[0].value;
     if(turn!=player) { return }

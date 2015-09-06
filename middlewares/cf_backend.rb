@@ -34,7 +34,7 @@ module ConnectFour
               r = {:msg_type=>"turn", :turn=> g.player.to_i==2 ? 1 : 2}
               msg_to_send << r.to_json
               if g.winner?
-                r = {:msg_type=>"chat", :player=>g.player, :text=>"winner"}
+                r = {:msg_type=>"winner", :player=>g.player}
                 msg_to_send << r.to_json
               end
             end
